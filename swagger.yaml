@@ -1,9 +1,8 @@
-
 swagger: '2.0'
 info:
-  title: Uber API
-  description: Move your app forward with the Uber API
-  version: "1.0.0"
+  title: Aptly API
+  description: The swiss army knife for Debian repository management
+  version: "0.9.7"
 # the domain of the service
 host: localhost:8080
 # array of all schemes that your API supports
@@ -32,7 +31,7 @@ paths:
       responses:
         200:
           description: List of currently available repositories
-          schema: 
+          schema:
             type: array
             items:
               $ref: '#/definitions/Repository'
@@ -63,7 +62,7 @@ paths:
       responses:
         200:
           description: Repository
-          schema: 
+          schema:
             $ref: '#/definitions/Repository'
         404:
           description: repository with such name doesn’t exist
@@ -82,16 +81,16 @@ paths:
       responses:
         200:
           description: Repository
-          schema: 
+          schema:
             $ref: '#/definitions/Repository'
         404:
-          description: repository with such name doesn’t exist      
+          description: repository with such name doesn’t exist
     delete:
       summary: Delete local repository.
       description: |
-        Local repository can’t be deleted if it is published. 
-        If local repository has snapshots, aptly would refuse 
-        to delete it by default, but that can be overridden 
+        Local repository can’t be deleted if it is published.
+        If local repository has snapshots, aptly would refuse
+        to delete it by default, but that can be overridden
         with force flag.
       parameters:
         - name: name
@@ -143,13 +142,13 @@ paths:
       summary: Import packages from files to the local repository
       description: |
         Import packages from files (uploaded using File Upload API)
-        to the local repository. If directory specified, aptly would 
+        to the local repository. If directory specified, aptly would
         discover package files automatically.
-        
+
         Adding same package to local repository is not an error.
-        
-        By default aptly would try to remove every successfully 
-        processed file and directory :dir (if it becomes empty after 
+
+        By default aptly would try to remove every successfully
+        processed file and directory :dir (if it becomes empty after
         import).
       parameters:
         - name: name
@@ -175,7 +174,7 @@ paths:
       responses:
         200:
           description: success
-          schema: 
+          schema:
             $ref: '#/definitions/ImportResult'
         404:
           description: repository with such name doesn’t exist
@@ -185,13 +184,13 @@ paths:
       summary: Import packages from files to the local repository
       description: |
         Import packages from files (uploaded using File Upload API)
-        to the local repository. If directory specified, aptly would 
+        to the local repository. If directory specified, aptly would
         discover package files automatically.
-        
+
         Adding same package to local repository is not an error.
-        
-        By default aptly would try to remove every successfully 
-        processed file and directory :dir (if it becomes empty after 
+
+        By default aptly would try to remove every successfully
+        processed file and directory :dir (if it becomes empty after
         import).
       parameters:
         - name: name
@@ -221,7 +220,7 @@ paths:
       responses:
         200:
           description: success
-          schema: 
+          schema:
             $ref: '#/definitions/ImportResult'
         404:
           description: repository with such name doesn’t exist
@@ -261,8 +260,8 @@ paths:
       # Unavailable in editor due to this bug: https://github.com/swagger-api/swagger-editor/issues/599#issuecomment-266354589
       summary: Parameter {dir} is upload directory name. Directory would be created if it doesn’t exist.
       description: |
-        Any number of files can be uploaded in one call, 
-        aptly would preserve filenames. No check is performed 
+        Any number of files can be uploaded in one call,
+        aptly would preserve filenames. No check is performed
         if existing uploaded would be overwritten.
       consumes:
         - multipart/form-data
@@ -280,7 +279,7 @@ paths:
       responses:
         200:
           description: success
-    
+
     delete:
       summary: Deletes all files in upload directory and directory itself.
       parameters:
@@ -355,30 +354,30 @@ definitions:
         description: local repository name
         # concider readOnly: true
         type: string
-        
+
       Comment:
         description: text describing local repository, for the user
         type: string
-        
+
       DefaultDistribution:
         description: default distribution when publishing from this local repo
         type: string
-        
+
       DefaultComponent:
         description: default component when publishing from this local repo
         type: string
-  
+
   RepositoryUpdate:
     type: object
     properties:
         Comment:
           description: text describing local repository, for the user
           type: string
-          
+
         DefaultDistribution:
           description: default distribution when publishing from this local repo
           type: string
-          
+
         DefaultComponent:
           description: default component when publishing from this local repo
           type: string
@@ -412,4 +411,4 @@ definitions:
         description: 	list of messages related to packages being deleted
         type: array
         items:
-          type: string   
+          type: string
