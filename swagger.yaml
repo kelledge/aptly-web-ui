@@ -130,12 +130,61 @@ paths:
         - name: format
           description: "result format, compact by default (only package keys), details to return full information about each package (might be slow on large repos)"
           in: query
-          require: false
+          required: false
           type: string
           enum: ["compact", "details"]
       responses:
+        200:
+          description: success
         404:
           description: repository with such name doesn’t exist
+    post:
+      summary: Add packages to local repository by package keys.
+      description: |
+        Any package could be added, it should be part of aptly database
+        (it could come from any mirror, snapshot, other local repository).
+        This API combined with package list (search) APIs allows to
+        implement importing, copying, moving packages around.
+
+        API verifies that packages actually exist in aptly database and
+        checks constraint that conflicting packages can’t be part of the
+        same local repository.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          type: string
+        - name: asdf
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PackageKeys'
+      responses:
+        200:
+          description: success
+        400:
+          description: added package conflicts with already exists in repository
+        404:
+          description: repository with such name doesn’t exist OR package with specified key doesn’t exist
+    delete:
+      summary: Remove packages from local repository by package keys.
+      parameters:
+        - name: name
+          in: path
+          required: true
+          type: string
+        - name: asdf
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PackageKeys'
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/Repository'
+        404:
+          description: repository with such name doesn’t exist OR package with specified key doesn’t exist
 
   /repos/{name}/file/{dir}:
     post:
@@ -225,9 +274,25 @@ paths:
         404:
           description: repository with such name doesn’t exist
 
-# ADD PACKAGES BY KEY
-# POST /api/repos/:name/packages
-# DELETE /api/repos/:name/packages
+# POST /api/repos/:name/snapshots
+  /repos/{name}/snapshots:
+    post:
+      summary: Create snapshot of current local repository :name contents as new snapshot with name {snapname}.
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+        - name: snapshot
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SnapshotUpdate'
+      responses:
+        200:
+          description: success
+
+
 
 # FILE UPLOAD API
   /files:
@@ -235,7 +300,7 @@ paths:
       summary: List all directories.
       responses:
         200:
-          description:list of directory names.
+          description: list of directory names.
 
   /files/{dir}:
     get:
@@ -326,20 +391,264 @@ paths:
           description: package with such key doesn’t exist
 
 # SNAPSHOT API
+
 # GET /api/snapshots
-# POST /api/repos/:name/snapshots
 # POST /api/snapshots
+  /snapshots:
+    get:
+      summary: Return list of all snapshots created in the system.
+      parameters:
+        - name: sort
+          description: snapshot order, defaults to name, set to time to display in creation order
+          in: query
+          required: false
+          type: string
+          enum: ["name", "time"]
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Snapshot'
+    post:
+      summary: Create snapshot from list of package references.
+      description: |
+        This API creates snapshot out of any list of package references.
+        Package references could be obtained from other snapshots, local
+        repos or mirrors.
+
+        Sending request without SourceSnapshots and PackageRefs would
+        create empty snapshot.
+      parameters:
+        - name: asdf
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SnapshotFromPackageRefs'
+      responses:
+        200:
+          description: success
+        400:
+          description: snapshot with name Name already exists, package conflict
+        404:
+          description: 	source snapshot doesn’t exist, package doesn’t exist
+
+
+
 # PUT /api/snapshots/:name
 # GET /api/snapshots/:name
 # DELETE /api/snapshots/:name
+  /snapshots/{name}:
+    get:
+      summary: Get information about snapshot by name.
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/Snapshot'
+
+    put:
+      summary: Update snapshot's description or name.
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+        - name: asdf
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SnapshotUpdate'
+      responses:
+        200:
+          description: success
+        404:
+          description: snapshot with such name doesn’t exist
+        409:
+          description: rename is not possible; name already used by another snapshot
+
+    delete:
+      summary: Delete snapshot.
+      description: |
+        Snapshot can’t be deleted if it is published. aptly would
+        refuse to delete snapshot if it has been used as source to
+        create other snapshots, but that could be overridden with
+        force parameter.
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+        - name: force
+          in: query
+          type: integer
+          required: false
+          enum: [0, 1]
+      responses:
+        200:
+          description: success
+        404:
+          description: snapshot with such name doesn’t exist
+        409:
+          description: snapshot can’t be dropped (reason in the message)
+
 # GET /api/snapshots/:name/packages
+  /snapshots/{name}/packages:
+    get:
+      summary: List all packages in snapshot or perform search on snapshot contents and return result.
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+        - name: q
+          in: query
+          type: string
+          required: false
+        - name: withDeps
+          in: query
+          type: integer
+          required: false
+          enum: [0, 1]
+        - name: format
+          in: query
+          type: string
+          required: false
+          enum: ["compact" ,"details"]
+      responses:
+        200:
+          description: success
+
 # GET /api/snapshots/:name/diff/:withSnapshot
+  /snapshots/{name}/diff/{withSnapshot}:
+    get:
+      summary: Calculate difference between two snapshots :name (left) and :withSnapshot (right).
+      parameters:
+        - name: name
+          in: path
+          type: string
+          required: true
+        - name: withSnapshot
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PackageDiff'
+
+
+
 
 # PUBLISH API
 # GET /api/publish
+  /publish:
+    get:
+      summary: List published repositories.
+      responses:
+        200:
+          description: success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PublishedRepository'
+    post:
+      summary: Publish local repository or snapshot without prefix
+      parameters:
+        - name: asdf
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PublishRepository'
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/PublishedRepository'
+        400:
+          description: prefix/distribution is already used by another published repository
+        404:
+          description: source snapshot/repo hasn’t been found
+
+
 # POST /api/publish/:prefix
+  /publish/{prefix}:
+    post:
+      summary: Publish local repository or snapshot under specified prefix.
+      description: Storage might be passed in prefix as well, e.g. s3:packages/.
+      parameters:
+        - name: prefix
+          in: path
+          type: string
+          required: true
+        - name: asdf
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PublishRepository'
+      responses:
+        200:
+          description: success
+        400:
+          description: prefix/distribution is already used by another published repository
+        404:
+          description: source snapshot/repo hasn’t been found
+
+
 # PUT /api/publish/:prefix/:distribution
 # DELETE /api/publish/:prefix/:distribution
+  /publish/{prefix}/{distribution}:
+    put:
+      summary: Update published local repo/Switch published snapshot
+      description: |
+        API action depends on published repository contents;
+         * if local repository has been published, published repository would be updated to match local repository contents
+         * if snapshots have been been published, it is possible to switch each component to new snapshot
+      parameters:
+        - name: prefix
+          in: path
+          type: string
+          required: true
+        - name: distribution
+          in: path
+          type: string
+          required: true
+        - name: asdf
+          in: body
+          schema:
+            $ref: '#/definitions/PublishedRepositoryUpdate'
+      responses:
+        200:
+          description: success
+    delete:
+      summary: Delete published repository, clean up files in published directory.
+      parameters:
+        - name: prefix
+          in: path
+          type: string
+          required: true
+        - name: distribution
+          in: path
+          type: string
+          required: true
+        - name: force
+          in: query
+          type: integer
+          required: false
+          enum: [0, 1]
+      responses:
+        200:
+          description: success
+
 
 definitions:
   Version:
@@ -347,12 +656,12 @@ definitions:
     properties:
       Version:
         type: string
+
   Repository:
     type: object
     properties:
       Name:
         description: local repository name
-        # concider readOnly: true
         type: string
 
       Comment:
@@ -391,7 +700,6 @@ definitions:
         items:
           type: string
       Report:
-        description: operation report
         $ref: '#/definitions/ImportOperationReport'
 
   ImportOperationReport:
@@ -408,7 +716,180 @@ definitions:
         items:
           type: string
       Deleted:
-        description: 	list of messages related to packages being deleted
+        description: list of messages related to packages being deleted
         type: array
         items:
           type: string
+
+  Snapshot:
+    type: object
+    properties:
+      Name:
+        description: snapshot name
+        type: string
+      Description:
+        description: free-format description how snapshot has been created
+        type: string
+      CreatedAt:
+        description: creation timestamp
+        type: integer
+
+  SnapshotFromPackageRefs:
+    type: object
+    properties:
+      Name:
+        description: snapshot name
+        type: string
+      Description:
+        description: free-format description how snapshot has been created
+        type: string
+      SourceSnapshots:
+        description: list of source snapshot names (only for tracking purposes)
+        type: array
+        items:
+          type: string
+      PackageRefs:
+        description: list of package keys which would be contents of the repository
+        type: array
+        items:
+          type: string
+
+  SnapshotUpdate:
+    type: object
+    properties:
+      Name:
+        description: new snapshot name
+        type: string
+      Description:
+        description: free-format description how snapshot has been created
+        type: string
+
+  PackageDiff:
+    type: object
+    properties:
+      Left:
+        description: package reference present only in left snapshot
+        type: string
+      Right:
+        description: package reference present only in right snapshot
+        type: string
+
+  PublishedRepository:
+    type: object
+    properties:
+      Storage:
+        description: storage kind (empty for local filesystem, s3 for S3 and swift for Swift)
+        type: string
+      Prefix:
+        description: publishing prefix, . for root
+        type: string
+      Distribution:
+        description: distribution name
+        type: string
+      SourceKind:
+        description: type of published repository; snapshot for snapshot, local for local repositories
+        type: string
+      Sources:
+        description: list of sources, Component and Name of local repository/snapshot
+        type: array
+        items:
+          $ref: '#/definitions/PublishSource'
+      Architectures:
+        description: list of architectures published, e.g. ["i386", "amd64"]
+        type: array
+        items:
+          type: string
+      Label:
+        description: value of Label; field in published repository stanza
+        type: string
+      Origin:
+        description: value of Origin; field in published repository stanza
+        type: string
+
+  PublishedRepositoryUpdate:
+    type: object
+    properties:
+      Snapshots:
+        $ref: '#/definitions/PublishSource'
+      ForceOverwrite:
+        description: when publishing, overwrite files in pool/ directory without notice
+        type: boolean
+      Signing:
+        $ref: '#/definitions/SigningOptions'
+
+  PublishRepository:
+    type: object
+    properties:
+      SourceKind:
+        description: required, source kind; local for local repositories and snapshot for snapshots
+        type: string
+        enum: ["local", "snapshot"]
+      Sources:
+        description: required, list of Component/Name objects, Name is either local repository or snpashot name
+        type: array
+        items:
+          $ref: '#/definitions/PublishSource'
+      Distribution:
+        description: distribution name, if missing aptly would try to guess from sources
+        type: string
+      Label:
+        description: value of Label; field in published repository stanza
+        type: string
+      Origin:
+        description: value of Origin; field in published repository stanza
+        type: string
+      ForceOverwrite:
+        description: when publishing, overwrite files in pool/ directory without notice
+        type: boolean
+      Architectures:
+        description: override list of published architectures
+        type: array
+        items:
+          type: string
+      Signing:
+        $ref: '#/definitions/SigningOptions'
+
+  PublishSource:
+    type: object
+    properties:
+      Component:
+        description: ""
+        type: string
+      Name:
+        description: ""
+        type: string
+
+  SigningOptions:
+    type: object
+    properties:
+      Skip:
+        description: if true, don’t sign published repository
+        type: boolean
+      Batch:
+        description: should be set if passing passphrase
+        type: boolean
+      GpgKey:
+        description: gpg key name (local to aptly server/user)
+        type: string
+      Keyring:
+        description: gpg keyring filename (local to aptly server/user)
+        type: string
+      SecretKeyring:
+        description: gpg secret keyring filename (local to aptly server/user)
+        type: string
+      Passphrase:
+        description: gpg key passphrase (if using over http, would be transmitted in clear text!)
+        type: string
+      PassphraseFile:
+        description: gpg passphrase file (local to aptly server/user)
+        type: string
+
+  # Not really sure on the naming on this resource
+  PackageKeys:
+    type: object
+    properties:
+      PackageRefs:
+        description: list of package references (package keys)
+        type: array
+        items:
+          type: string 
