@@ -1,51 +1,55 @@
 import * as angular from 'angular';
-import * as models from './app/aptly/model/models';
 import {DefaultApi} from './app/aptly/api/DefaultApi';
-
-
-export default routesConfig;
+import {Repository} from './app/aptly/model/Repository';
 
 /** @ngInject */
-function routesConfig($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $locationProvider: angular.ILocationProvider) {
+export function RoutesConfig($stateProvider: angular.ui.IStateProvider,
+                      $urlRouterProvider: angular.ui.IUrlRouterProvider,
+                      $locationProvider: angular.ILocationProvider) {
   $locationProvider.html5Mode(false);
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
     .state('index', {
       url: '/',
-      component: 'layout',
+      views: {
+        '@': {
+          component: 'layout'
+        }
+      }
     })
-    .state('main', {
+    .state('repositories', {
       parent: 'index',
-      url: 'repo',
-      resolve: {
-        repos: function(DefaultApi: DefaultApi): angular.IPromise<models.Repository[]> {
-          return DefaultApi.reposGet().then((res: angular.IHttpPromiseCallbackArg<models.Repository[]>): models.Repository[] => {
-            return res.data;
-          });
+      url: 'repositories',
+      views: {
+        'main@index': {
+          component: 'repositoryView'
         }
       },
-      views: {
-        'navigation@index': {
-          component: 'navigation'
-        },
-        'content@index': {
-          component: 'repoList'
-        }
-      }
-    });
-/*
-  $stateProvider
-    .state('app', {
-      url: '/',
-      component: 'repo',
       resolve: {
-        repoList: function(DefaultApi: DefaultApi): angular.IPromise<models.Repository[]> {
-          return DefaultApi.reposGet().then((res: angular.IHttpPromiseCallbackArg<models.Repository[]>): models.Repository[] => {
+        repositoryList: (DefaultApi: DefaultApi): angular.IHttpPromise<Repository[]> => {
+          return DefaultApi.reposGet().then((res: angular.IHttpPromiseCallbackArg<Repository[]>) => {
+            console.log("repositoryList",res);
             return res.data;
           });
         }
       }
+    })
+    .state('uploads', {
+      parent: 'index',
+      url: 'uploads',
+      views: {
+        'main@index': {
+          component: 'uploadView'
+        }
+      },
+      resolve: {
+        directoryList: (DefaultApi: DefaultApi) => {
+          DefaultApi.filesGet().then((res: any) => {
+            console.log("directoryList", res);
+            return res.data;
+          })
+        }
+      }
     });
-*/
 }

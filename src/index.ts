@@ -4,32 +4,41 @@ import 'angular-animate';
 import 'angular-aria';
 import 'angular-material';
 import 'angular-ui-router';
+import 'angular-sanitize';
+
+import 'angular-material-data-table';
 
 import apiModule from './app/aptly/api.module';
+import {RepositoryModule} from './app/repository/module';
+import {UploadModule} from './app/upload/module';
 
-import {hello} from './app/hello';
-import {repo} from './app/repo/repo';
-import {repoList} from './app/repo/list';
-import {layout} from './layout';
+import {LayoutComponent} from './layout';
 
-import {navigation} from './navigation';
-
-import routesConfig from './routes';
+import {RoutesConfig} from './routes';
+import {ThemeConfig} from './theme';
 
 import './index.scss';
 
 export const app: string = 'app';
 
 angular
-  .module(app, [apiModule.name, 'ui.router', 'ngMaterial'])
-  .config(routesConfig)
-  .config(function ($mdThemingProvider:angular.material.IThemingProvider) {
-    $mdThemingProvider.theme('default')
-      .primaryPalette('brown')
-      .accentPalette('red');
-})
-  .constant('basePath', 'http://localhost:8080/api')
-  .component('app', hello)
-  .component('layout', layout)
-  .component('navigation', navigation)
-  .component('repoList', repoList);
+  .module(app, [
+    apiModule.name,
+    RepositoryModule.name,
+    UploadModule.name,
+    'ui.router',
+    'ngMaterial',
+    'md.data.table'])
+  .config(RoutesConfig)
+  .config(ThemeConfig)
+  .constant('basePath', 'http://localhost/api')
+  .component('layout', LayoutComponent)
+  .filter('bytes', function() {
+  	return function(bytes, precision) {
+  		if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
+  		if (typeof precision === 'undefined') precision = 1;
+  		var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
+  			number = Math.floor(Math.log(bytes) / Math.log(1024));
+  		return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
+  	}
+  });

@@ -1,0 +1,49 @@
+<md-card>
+
+  <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+    <div class="md-toolbar-tools">
+      <md-input-container flex style="width: 100%;">
+        <label>Search</label>
+        <input type="text" ng-model="$ctrl.query.search" ng-change="$ctrl.changeViewOption()">
+      </md-input-container>
+      <div flex></div>
+      <md-button class="md-fab md-primary" ng-click="loadStuff()">
+        <md-icon>add</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-table-container>
+    <table md-table md-row-select multiple ng-model="$ctrl.selected">
+      <thead md-head>
+        <tr md-row>
+          <th md-column><span>Name</span></th>
+          <th md-column><span>Default Distribution</span></th>
+          <th md-column><span>Default Component</span></th>
+          <th md-column><span>Comment</span></th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row md-select="repository" ng-repeat="repository in $ctrl.repositoryList">
+          <td md-cell>{{ repository.Name }}</td>
+          <td md-cell>{{ repository.DefaultDistribution }}</td>
+          <td md-cell>{{ repository.DefaultComponent }}</td>
+          <td md-cell>{{ repository.Comment }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+
+  <md-table-pagination
+    md-limit="$ctrl.paginateOptions.limit"
+    md-limit-options="$ctrl.paginateOptions.limitOptions"
+    md-page="$ctrl.page"
+    md-total="{{$ctrl.paginateOptions.total}}"
+    md-page-select="$ctrl.paginateOptions.pageSelect"
+    md-boundary-links="$ctrl.paginateOptions.boundaryLinks"
+    md-on-paginate="$ctrl.f">
+  </md-table-pagination>
+
+</md-card>
+
+  <md-button ng-click="$ctrl.logOptions()">LOG</md-button>

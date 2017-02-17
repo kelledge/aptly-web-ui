@@ -1,0 +1,26 @@
+<div layout="column">
+  <md-input-container flex="100">
+    <label>Repository Name</label>
+    <input required name="clientName" ng-model="$ctrl.repository.name">
+    <div class="hint">local repository name</div>
+  </md-input-container>
+  <md-input-container flex="100">
+    <label>Comment</label>
+    <input required name="clientName" ng-model="$ctrl.repository.comment">
+    <div class="hint">text describing local repository, for the user</div>
+  </md-input-container>
+  <md-input-container flex="100">
+    <label>Default Distribution</label>
+    <input required name="clientName" ng-model="$ctrl.repository.defaultDistribution">
+    <div class="hint">default distribution when publishing from this local repo</div>
+  </md-input-container>
+  <md-input-container flex="100">
+    <label>Default Component</label>
+    <input required name="clientName" ng-model="$ctrl.repository.defaultComponent">
+    <div class="hint">default component when publishing from this local repo</div>
+  </md-input-container>
+</div>
+
+<div>
+  <md-button type="submit" ng-click="$ctrl.addRepo()">Add</md-button>
+</div>
