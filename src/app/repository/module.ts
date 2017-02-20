@@ -1,12 +1,12 @@
 import * as angular from 'angular';
 
 import {RepositoryListComponent} from './list';
-import {RepositoryListElementComponent} from './list-element';
 import {RepositoryViewComponent} from './view';
-import {RepositoryAddComponent} from './add';
 
-export const RepositoryModule = angular.module('repository', [])
-  .component('repositoryList', RepositoryListComponent)
-  .component('repositoryListElement', RepositoryListElementComponent)
+import {RepositoryRoutesConfig} from './routes';
+
+export const RepositoryModule = angular.module('repository', [
+  'ui.router'
+  ])
+  .config(RepositoryRoutesConfig)
   .component('repositoryView', RepositoryViewComponent)
-  .component('repositoryAdd', RepositoryAddComponent);

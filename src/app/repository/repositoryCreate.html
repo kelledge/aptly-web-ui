@@ -1,0 +1,39 @@
+<md-dialog aria-label="File Upload">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create Repository</h2>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout="column">
+        <md-input-container flex>
+          <label>Repository Name</label>
+          <input required name="clientName" ng-model="$ctrl.repository.name">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Comment</label>
+          <input required name="clientName" ng-model="$ctrl.repository.comment">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Default Distribution</label>
+          <input required name="clientName" ng-model="$ctrl.repository.defaultDistribution">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Default Component</label>
+          <input required name="clientName" ng-model="$ctrl.repository.defaultComponent">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised" ng-click="$ctrl.cancel()">
+        Cancel
+      </md-button>
+      <md-button class="md-raised md-primary" ng-click="$ctrl.create()">
+        Create
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

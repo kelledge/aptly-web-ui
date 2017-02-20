@@ -1,5 +1,24 @@
-<repository-list repository-list="$ctrl.repositoryList"></repository-list>
-
 <md-card>
-  <repository-add></repository-add>
+
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <h2>Repositories</h2>
+      <div flex></div>
+      <md-button class="md-fab md-mini md-primary" aria-label="Upload" ng-click="$ctrl.createRepository($event)">
+        <md-icon>add</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-list>
+
+    <md-list-item ng-click="$ctrl.viewPackages(repository)" ng-repeat-start="repository in $ctrl.repositoryList">
+      <p>{{ repository.Name }}</p>
+      <md-icon class="md-secondary" ng-click="" aria-label="Chat">input</md-icon>
+      <md-icon class="md-secondary" ng-click="$ctrl.deleteRepository(repository)" aria-label="Chat">delete</md-icon>
+    </md-list-item>
+    <md-divider ng-repeat-end ng-if="!$last"></md-divider>
+
+  </md-list>
+
 </md-card>

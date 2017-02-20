@@ -8,13 +8,9 @@ export class RepositoryAddController implements angular.IController {
 
   public constructor(private DefaultApi: DefaultApi, private $state: any) {}
 
-  public $onInit() {
-    console.log("RepositoryAddController.$onInit", this.$state);
-  }
+  public $onInit() {}
 
-  public $onDestroy() {
-    console.log("RepositoryAddController.$onDestroy");
-  }
+  public $onDestroy() {}
 
   public addRepo() {
     var $ctrl = this;
