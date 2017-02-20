@@ -3,7 +3,6 @@ import * as angular from 'angular';
 class Layout implements angular.IController {
 
   private currentState: string;
-  private watch: () => void;
 
   constructor(private $rootScope: angular.IScope,
               private $log: angular.ILogService,
@@ -18,10 +17,6 @@ class Layout implements angular.IController {
     });
 
     console.log(this.currentState);
-  }
-
-  public $onDestroy() {
-    this.watch();
   }
 }
 

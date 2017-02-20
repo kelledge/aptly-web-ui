@@ -4,13 +4,14 @@ import 'angular-animate';
 import 'angular-aria';
 import 'angular-material';
 import 'angular-ui-router';
-import 'angular-sanitize';
-
 import 'angular-material-data-table';
 
+// NOTE: probably un-needed as a top-level module dep
 import apiModule from './app/aptly/api.module';
+
 import {RepositoryModule} from './app/repository/module';
 import {UploadModule} from './app/upload/module';
+import {FileModule} from './app/file/module';
 
 import {LayoutComponent} from './layout';
 
@@ -26,19 +27,11 @@ angular
     apiModule.name,
     RepositoryModule.name,
     UploadModule.name,
+    FileModule.name,
     'ui.router',
     'ngMaterial',
     'md.data.table'])
   .config(RoutesConfig)
   .config(ThemeConfig)
   .constant('basePath', 'http://localhost/api')
-  .component('layout', LayoutComponent)
-  .filter('bytes', function() {
-  	return function(bytes, precision) {
-  		if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
-  		if (typeof precision === 'undefined') precision = 1;
-  		var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
-  			number = Math.floor(Math.log(bytes) / Math.log(1024));
-  		return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
-  	}
-  });
+  .component('layout', LayoutComponent);
