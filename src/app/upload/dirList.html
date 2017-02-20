@@ -1,0 +1,24 @@
+<md-card>
+
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <h2>Directories</h2>
+      <div flex></div>
+      <md-button class="md-fab md-mini md-primary" aria-label="Upload" ng-click="$ctrl.createDirectory($event)">
+        <md-icon>add</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-list>
+
+    <md-list-item ng-click="$ctrl.viewFiles(directory)" ng-repeat-start="directory in $ctrl.directoryList">
+        <p>{{ directory }}</p>
+        <md-icon class="md-secondary" ng-click="" aria-label="Chat">input</md-icon>
+        <md-icon class="md-secondary" ng-click="$ctrl.deleteDirectory(directory)" aria-label="Chat">delete</md-icon>
+    </md-list-item>
+    <md-divider ng-repeat-end ng-if="!$last"></md-divider>
+
+  </md-list>
+
+</md-card>

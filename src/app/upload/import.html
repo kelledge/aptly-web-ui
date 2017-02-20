@@ -1,0 +1,35 @@
+<md-dialog aria-label="File Upload">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Import File</h2>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+      <div layout="row">
+        <md-input-container flex>
+          <label>Repositories<label>
+          <md-select aria-label="None" ng-model="$ctrl.repositoryTarget">
+            <md-option ng-value="repository.Name" ng-repeat="repository in $ctrl.repositoryList">{{ repository.Name }}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <div>
+        {{ $ctrl.repositoryTarget }}
+      </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised" ng-click="$ctrl.cancel()">
+        Cancel
+      </md-button>
+      <md-button class="md-raised md-primary" ng-click="$ctrl.import()">
+        Import
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

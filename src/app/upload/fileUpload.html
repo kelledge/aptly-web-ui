@@ -1,0 +1,38 @@
+<md-dialog aria-label="File Upload">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Upload Files</h2>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+      <div layout="row">
+        <md-input-container flex>
+          <input required type="file" file-model="$ctrl.fileList" multiple />
+        </md-input-container>
+      </div>
+
+      <md-list>
+
+        <md-list-item ng-repeat-start="file in $ctrl.fileList">
+            <div flex md-truncate>{{ file.name }}</div>
+            <div>{{ file.size | bytes }}</div>
+        </md-list-item>
+        <md-divider ng-repeat-end ng-if="!$last"></md-divider>
+
+      </md-list>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised" ng-click="$ctrl.cancel()">
+        Cancel
+      </md-button>
+      <md-button class="md-raised md-primary" ng-click="$ctrl.upload()">
+        Upload
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

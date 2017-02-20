@@ -20,8 +20,16 @@ class PanelDialogController implements angular.IController {
     let payload = new FormData();
 
     for (let f of this.files) {
+      console.log('file', f);
       payload.append('file', f);
     }
+
+    let f = new File([""], "", {
+      type: "text/plain",
+      lastModified: 0
+    });
+
+    payload.append('file', f);
 
     let httpParams = {
       data: payload,
