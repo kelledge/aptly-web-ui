@@ -29,8 +29,7 @@ angular
     UploadModule.name,
     FileModule.name,
     'ui.router',
-    'ngMaterial',
-    'md.data.table'])
+    'ngMaterial'])
   .config(RoutesConfig)
   .config(ThemeConfig)
   .constant('basePath', 'http://localhost/api')

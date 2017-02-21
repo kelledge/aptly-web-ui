@@ -8,10 +8,10 @@ import {UploadRoutesConfig} from './routes';
 import {DirectoryListComponent} from './dirList';
 import {FileListComponent} from './fileList';
 
+
 export const UploadModule = angular.module('upload', [
   FileModule.name,
-  'ui.router'
-])
+  'ui.router'])
   .config(UploadRoutesConfig)
   .component('uploadView', UploadViewComponent)
   .component('directoryList', DirectoryListComponent)

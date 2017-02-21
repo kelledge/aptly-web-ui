@@ -1,8 +1,7 @@
 import * as angular from 'angular';
 
 /**
-* A very simple facade around the file upload API. Its purpose is to smooth over
-* some of the more awkward edges of the swagger generated aptly API.
+* Simple HTTP request configuration builder to help with file uploads
 */
 export class FileUploadHttpParams {
   private payload = new FormData();

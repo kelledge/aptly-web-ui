@@ -17,8 +17,8 @@
 
     <md-list-item ng-repeat-start="file in $ctrl.fileList">
         <p>{{ file }}</p>
-        <md-icon class="md-secondary" ng-click="$ctrl.importFile($event, file)" aria-label="Chat">input</md-icon>
-        <md-icon class="md-secondary" ng-click="$ctrl.deleteFile(file)">delete</md-icon>
+        <md-icon class="md-secondary" aria-label="Import" ng-click="$ctrl.importFile($event, file)">input</md-icon>
+        <md-icon class="md-secondary" aria-label="Delete File" ng-click="$ctrl.deleteFile(file)">delete</md-icon>
     </md-list-item>
     <md-divider ng-repeat-end ng-if="!$last"></md-divider>
 

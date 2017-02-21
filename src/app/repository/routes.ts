@@ -3,6 +3,7 @@ import * as angular from 'angular';
 import {DefaultApi} from '../aptly/api/DefaultApi';
 import {Repository} from '../aptly/model/Repository';
 
+
 export function RepositoryRoutesConfig($stateProvider: angular.ui.IStateProvider) {
   $stateProvider
     .state('repositories', {
@@ -16,9 +17,43 @@ export function RepositoryRoutesConfig($stateProvider: angular.ui.IStateProvider
       resolve: {
         repositoryList: (DefaultApi: DefaultApi): angular.IHttpPromise<Repository[]> => {
           return DefaultApi.reposGet().then((res: angular.IHttpPromiseCallbackArg<Repository[]>) => {
-            console.log("reposGet()",res.data);
             return res.data;
           });
+        }
+      }
+    })
+    .state('repoList', {
+      parent: 'repositories',
+      url: '/list',
+      views: {
+        'main@repositories': {
+          component: 'repositoryList'
+        }
+      },
+      resolve: {
+        repositoryList: (DefaultApi: DefaultApi): angular.IHttpPromise<Repository[]> => {
+          return DefaultApi.reposGet().then((res: angular.IHttpPromiseCallbackArg<Repository[]>) => {
+            return res.data;
+          });
+        }
+      }
+    })
+    .state('pkgList', {
+      parent: 'repositories',
+      url: '/list/{repositoryName:string}/packages',
+      views: {
+        'main@repositories': {
+          component: 'packageList'
+        }
+      },
+      resolve: {
+        packageList: (DefaultApi: DefaultApi, $stateParams: any) => {
+          return DefaultApi.reposNamePackagesGet($stateParams.repositoryName).then((res) => {
+            return res.data;
+          });
+        },
+        repositoryName: ($stateParams: any) => {
+          return $stateParams.repositoryName;
         }
       }
     });

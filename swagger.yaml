@@ -892,4 +892,4 @@ definitions:
         description: list of package references (package keys)
         type: array
         items:
-          type: string 
+          type: string

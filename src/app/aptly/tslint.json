@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "jsdoc-format": false,
+    "no-string-literal": false
+  }
+}

@@ -3,8 +3,5 @@ import * as angular from 'angular';
 
 const apiModule = angular.module('api', [])
 .service('DefaultApi', api.DefaultApi)
-.run(function () {
-  console.log('api')
-});
 
 export default apiModule;

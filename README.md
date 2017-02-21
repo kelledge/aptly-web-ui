@@ -24,6 +24,9 @@ Ongoing and longer term, the goals are:
 
 
 ## Status ##
+Still very much in the 'stake' phase. De-risking and familiarizing with the
+chosen tools.
+
 - [X] Full API specified
 - [X] Automated Typescript API generation
 - [-] CRUD Repositories

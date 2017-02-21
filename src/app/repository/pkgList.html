@@ -1,0 +1,22 @@
+<md-card>
+
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <a ui-sref="repoList">
+        <md-icon>arrow_back</md-icon>
+      </a>
+      <h2>{{ $ctrl.repositoryName }}</h2>
+    </div>
+  </md-toolbar>
+
+  <md-list>
+
+    <md-list-item ng-repeat-start="packageRef in $ctrl.packageList">
+        <p>{{ packageRef }}</p>
+        <md-icon class="md-secondary" aria-label="Delete PackageRef" ng-click="$ctrl.deletePackageRef(packageRef)">delete</md-icon>
+    </md-list-item>
+    <md-divider ng-repeat-end ng-if="!$last"></md-divider>
+
+  </md-list>
+
+</md-card>

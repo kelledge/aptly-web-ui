@@ -13,11 +13,10 @@ export class DirectoryListController implements angular.IController {
 
   public constructor(private DefaultApi: DefaultApi,
                      private $state: angular.ui.IStateService,
-                     private $mdDialog: angular.material.IDialogService) {}
+                     private $mdDialog: angular.material.IDialogService,
+                     private $log: angular.ILogService) {}
 
-  public $onInit() {
-    console.log("DirectoryListController.$onInit()", this.directoryList);
-  }
+  public $onInit() {}
 
   public $onDestroy() {}
 
@@ -35,22 +34,20 @@ export class DirectoryListController implements angular.IController {
       httpParams.attachFiles([emptyFile]);
       return this.DefaultApi.filesDirPost(dirName, {}, httpParams.getHttpParams());
     })
-    .then((result) => {
-      console.log("DefaultApi.filesDirPost()", result)
-      this.$state.reload();
-    })
     .catch((error) => {
-      console.log('Dialog Catch', error, this);
+      this.$log.error(error);
     })
-    // TODO: Handle finally(): May make sense to perform $state.reload() there.
+    .finally(() => {
+      this.$state.reload();
+    });
+
   }
 
   public deleteDirectory(dirName: string) {
     this.DefaultApi.filesDirDelete(dirName).then((result) => {
-      console.log(result);
     })
     .catch((error) => {
-      console.log(error);
+      this.$log.error(error);
     })
     .finally(() => {
       this.$state.reload();
@@ -58,10 +55,10 @@ export class DirectoryListController implements angular.IController {
   }
 
   public viewFiles(dirName: string) {
-    console.log(dirName);
     this.$state.go('files', {dirName: dirName});
   }
 }
+
 
 export const DirectoryListComponent: angular.IComponentOptions = {
   template: require('./dirList.html'),

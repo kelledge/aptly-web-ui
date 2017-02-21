@@ -1,11 +1,12 @@
 import * as angular from 'angular';
+
 import {DefaultApi} from '../aptly/api/DefaultApi';
 import {Repository} from '../aptly/model/Repository';
+import {ImportResult} from '../aptly/model/ImportResult';
+
 import {FileUploadHttpParams} from '../file/upload';
 
-/*
-*
-*/
+
 class FileUploadController implements angular.IController {
 
   private fileList: any;
@@ -27,13 +28,13 @@ class FileUploadController implements angular.IController {
   }
 }
 
-/*
-*
-*/
+
 class FileImportController implements angular.IController {
 
-  private repositoryTarget: Repository;
+  private repositoryTarget: any;
   private repositoryList: Repository[];
+  private noRemove: boolean;
+  private forceReplace: boolean;
 
   public constructor(private $mdDialog: angular.material.IDialogService,
                      private DefaultApi: DefaultApi,
@@ -41,17 +42,21 @@ class FileImportController implements angular.IController {
                      private fileName: string) {
     DefaultApi.reposGet().then((result) => {
       this.repositoryList = result.data;
-      console.log(this.repositoryList, this.dirName, this.fileName);
     });
   }
 
   public import() {
-    let importPromise = this.DefaultApi.reposNameFileDirFilePost(
-      this.repositoryTarget.name,
-      this.dirName,
-      this.fileName);
+    let noRemove = this.noRemove ? 1 : 0;
+    let forceReplace = this.forceReplace ? 1 : 0;
 
-    return importPromise;
+    let importPromise = this.DefaultApi.reposNameFileDirFilePost(
+      this.repositoryTarget.Name,
+      this.dirName,
+      this.fileName,
+      noRemove,
+      forceReplace);
+
+    this.$mdDialog.hide(importPromise);
   }
 
   public cancel() {
@@ -59,9 +64,7 @@ class FileImportController implements angular.IController {
   }
 }
 
-/*
-*
-*/
+
 export class FileListController implements angular.IController {
 
   private fileList: string[];
@@ -69,11 +72,11 @@ export class FileListController implements angular.IController {
 
   public constructor(private DefaultApi: DefaultApi,
                      private $state: angular.ui.IStateService,
-                     private $mdDialog: angular.material.IDialogService) {}
+                     private $mdDialog: angular.material.IDialogService,
+                     private $q: angular.IQService,
+                     private $log: angular.ILogService) {}
 
-  public $onInit() {
-    console.log("FileListController.$onInit()", this.fileList, this.dirName);
-  }
+  public $onInit() {}
 
   public $onDestroy() {}
 
@@ -91,10 +94,16 @@ export class FileListController implements angular.IController {
         fileName: fileName
       }
     }).then((result) => {
-      return result; // wait for upload
+      return result; // wait for import
+    })
+    .then((result) => {
+      let importResults = result.data;
+      if (importResults.FailedFiles.length !== 0) { // reject if there are failed files
+        return this.$q.reject(importResults);
+      }
     })
     .catch((error) => {
-      console.log(error);
+      this.$log.error(error);
     })
     .finally(() => {
       this.$state.reload();
@@ -118,7 +127,7 @@ export class FileListController implements angular.IController {
       return result; // wait for upload
     })
     .catch((error) => {
-      console.log(error);
+      this.$log.error(error);
     })
     .finally(() => {
       this.$state.reload();
@@ -126,11 +135,8 @@ export class FileListController implements angular.IController {
   }
 
   public deleteFile(fileName: string) {
-    this.DefaultApi.filesDirFileDelete(this.dirName, fileName).then((result) => {
-      console.log(result);
-    })
-    .catch((error) => {
-      console.log(error);
+    this.DefaultApi.filesDirFileDelete(this.dirName, fileName).catch((error) => {
+      this.$log.error(error);
     })
     .finally(() => {
       this.$state.reload();
@@ -138,6 +144,7 @@ export class FileListController implements angular.IController {
   }
 
 }
+
 
 export const FileListComponent: angular.IComponentOptions = {
   template: require('./fileList.html'),

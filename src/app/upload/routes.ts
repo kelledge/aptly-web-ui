@@ -1,5 +1,6 @@
 import {DefaultApi} from '../aptly/api/DefaultApi';
 
+
 /** @ngInject */
 export function UploadRoutesConfig($stateProvider: angular.ui.IStateProvider) {
   $stateProvider
@@ -23,7 +24,6 @@ export function UploadRoutesConfig($stateProvider: angular.ui.IStateProvider) {
       resolve: {
         directoryList: (DefaultApi: DefaultApi) => {
           return DefaultApi.filesGet().then((res: any) => {
-            console.log("filesGet()", res.data);
             return res.data;
           })
         }
