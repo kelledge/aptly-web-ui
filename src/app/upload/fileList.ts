@@ -31,7 +31,7 @@ class FileUploadController implements angular.IController {
 
 class FileImportController implements angular.IController {
 
-  private repositoryTarget: any;
+  private repositoryTarget: Repository;
   private repositoryList: Repository[];
   private noRemove: boolean;
   private forceReplace: boolean;
@@ -50,7 +50,7 @@ class FileImportController implements angular.IController {
     let forceReplace = this.forceReplace ? 1 : 0;
 
     let importPromise = this.DefaultApi.reposNameFileDirFilePost(
-      this.repositoryTarget.Name,
+      this.repositoryTarget.name,
       this.dirName,
       this.fileName,
       noRemove,

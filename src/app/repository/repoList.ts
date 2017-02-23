@@ -32,8 +32,8 @@ export class RepositoryListController implements angular.IController {
 
   public $onDestroy() {}
 
-  public viewPackages(repository: any) {
-    this.$state.go('pkgList', {repositoryName: repository.Name});
+  public viewPackages(repository: Repository) {
+    this.$state.go('pkgList', {repositoryName: repository.name});
   }
 
   public createRepository(event: MouseEvent) {
@@ -57,8 +57,8 @@ export class RepositoryListController implements angular.IController {
   }
 
   // TODO: fix-swagger-model-member-names
-  public deleteRepository(repository: any) {
-    this.DefaultApi.reposNameDelete(repository.Name).then((result) => {
+  public deleteRepository(repository: Repository) {
+    this.DefaultApi.reposNameDelete(repository.name).then((result) => {
     })
     .catch((error) => {
       this.$log.error(error);

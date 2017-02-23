@@ -11,7 +11,7 @@ export class FileUploadHttpParams {
   private error: (event: ProgressEvent) => void;
   private abort: (event: ProgressEvent) => void;
 
-  public attachFiles(files: File[]) {
+  public attachFiles(files: Blob[]) {
     for (let f of files) {
       this.payload.append('file', f);
     }
@@ -37,7 +37,5 @@ export class FileUploadHttpParams {
 /**
 * An empty file. Useful for creating directories with the aptly API.
 */
-export const emptyFile = new File([""], "", {
-  type: "text/plain",
-  lastModified: 0
-});
+export const emptyFile = new Blob([""], {type: "text/plain"});
+//export const emptyFile = File;

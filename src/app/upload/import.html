@@ -11,7 +11,7 @@
       <div layout="column">
         <md-input-container>
           <md-select placeholder="Repository Name" ng-model="$ctrl.repositoryTarget">
-            <md-option ng-value="repository" ng-repeat="repository in $ctrl.repositoryList">{{ repository.Name }}</md-option>
+            <md-option ng-value="repository" ng-repeat="repository in $ctrl.repositoryList">{{ repository.name }}</md-option>
           </md-select>
         </md-input-container>
         <md-switch ng-model="$ctrl.noRemove" aria-label="No Remove">
