@@ -22,3 +22,14 @@ services:
       - ui
     ports:
       - "80:80"
+
+  test:
+    image: node:7.5.0
+    command: npm run test
+    working_dir: /usr/src/app
+    expose:
+      - "3000"
+    volumes:
+      - ..:/usr/src/app
+
+

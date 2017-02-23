@@ -22,6 +22,26 @@ import './index.scss';
 
 export const app: string = 'app';
 
+
+
+import {cloneToCamelCase} from './app/utils';
+class ApiLog implements angular.IHttpInterceptor {
+
+  public constructor(private $q: angular.IQService) {}
+
+  response = <T>(response: ng.IHttpPromiseCallbackArg<T>): ng.IPromise<T> => {
+    response.data = cloneToCamelCase(response.data);
+    console.info('Response:', response);
+    return this.$q.when(response);
+  };
+
+  static factory($q: angular.IQService) {
+    return new ApiLog($q);
+  }
+
+}
+
+
 angular
   .module(app, [
     apiModule.name,
@@ -32,5 +52,8 @@ angular
     'ngMaterial'])
   .config(RoutesConfig)
   .config(ThemeConfig)
+  .config(($httpProvider: angular.IHttpProvider) => {
+    $httpProvider.interceptors.push(ApiLog.factory);
+  })
   .constant('basePath', 'http://localhost/api')
   .component('layout', LayoutComponent);
