@@ -28,6 +28,7 @@
     "@types/es6-shim": "0.31.32",
     "@types/jasmine": "2.5.41",
     "@types/node": "7.0.5",
+    "@types/jquery": "2.0.40",
     "angular": "1.5.11",
     "angular-animate": "1.5.11",
     "angular-aria": "1.5.11",
