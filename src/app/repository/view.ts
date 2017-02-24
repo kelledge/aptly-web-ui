@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import {Repository} from '../aptly/model/Repository';
+import {Repository} from '../aptly/gen/model/Repository';
 
 
 export class RepositoryViewController implements angular.IController {

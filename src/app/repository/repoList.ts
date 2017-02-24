@@ -1,6 +1,6 @@
 import * as angular from 'angular';
-import {DefaultApi} from '../aptly/api/DefaultApi';
-import {Repository} from '../aptly/model/Repository';
+import {DefaultApi} from '../aptly/gen/api/DefaultApi';
+import {Repository} from '../aptly/gen/model/Repository';
 
 
 class RepositoryCreateController implements angular.IController {
@@ -28,12 +28,14 @@ export class RepositoryListController implements angular.IController {
                      private DefaultApi: DefaultApi,
                      private $log: angular.ILogService) {}
 
-  public $onInit() {}
+  public $onInit() {
+    console.log(this.repositoryList);
+  }
 
   public $onDestroy() {}
 
   public viewPackages(repository: Repository) {
-    this.$state.go('pkgList', {repositoryName: repository.name});
+    this.$state.go('pkgList', {repositoryName: repository.Name});
   }
 
   public createRepository(event: MouseEvent) {
@@ -58,7 +60,7 @@ export class RepositoryListController implements angular.IController {
 
   // TODO: fix-swagger-model-member-names
   public deleteRepository(repository: Repository) {
-    this.DefaultApi.reposNameDelete(repository.name).then((result) => {
+    this.DefaultApi.reposNameDelete(repository.Name).then((result) => {
     })
     .catch((error) => {
       this.$log.error(error);

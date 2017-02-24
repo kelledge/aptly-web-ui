@@ -1,5 +1,5 @@
-import {DefaultApi} from '../aptly/api/DefaultApi';
-import {PackageKeys} from '../aptly/model/PackageKeys'
+import {DefaultApi} from '../aptly/gen/api/DefaultApi';
+import {PackageKeys} from '../aptly/gen/model/PackageKeys'
 
 
 export class PackageListController implements angular.IController {
@@ -12,7 +12,7 @@ export class PackageListController implements angular.IController {
 
   public deletePackageRef(packageKey: string) {
     let p: PackageKeys = {
-      packageRefs: [packageKey]
+      PackageRefs: [packageKey]
     };
 
     // TODO: Find out why this must be set manually.

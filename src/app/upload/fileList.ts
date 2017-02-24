@@ -1,8 +1,8 @@
 import * as angular from 'angular';
 
-import {DefaultApi} from '../aptly/api/DefaultApi';
-import {Repository} from '../aptly/model/Repository';
-import {ImportResult} from '../aptly/model/ImportResult';
+import {DefaultApi} from '../aptly/gen/api/DefaultApi';
+import {Repository} from '../aptly/gen/model/Repository';
+import {ImportResult} from '../aptly/gen/model/ImportResult';
 
 import {FileUploadHttpParams} from '../file/upload';
 
@@ -50,7 +50,7 @@ class FileImportController implements angular.IController {
     let forceReplace = this.forceReplace ? 1 : 0;
 
     let importPromise = this.DefaultApi.reposNameFileDirFilePost(
-      this.repositoryTarget.name,
+      this.repositoryTarget.Name,
       this.dirName,
       this.fileName,
       noRemove,

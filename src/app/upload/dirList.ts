@@ -1,4 +1,4 @@
-import {DefaultApi} from '../aptly/api/DefaultApi';
+import {DefaultApi} from '../aptly/gen/api/DefaultApi';
 import {FileUploadHttpParams, emptyFile} from '../file/upload';
 
 

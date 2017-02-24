@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
-import {DefaultApi} from '../aptly/api/DefaultApi';
-import {Repository} from '../aptly/model/Repository';
+import {DefaultApi} from '../aptly/gen/api/DefaultApi';
+import {Repository} from '../aptly/gen/model/Repository';
 
 
 export function RepositoryRoutesConfig($stateProvider: angular.ui.IStateProvider) {
