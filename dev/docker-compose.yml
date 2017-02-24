@@ -25,7 +25,7 @@ services:
 
   code-gen:
     build: ./code-gen
-    command: generate -c swagger.conf.json -i swagger.yaml -l typescript-angular -o src/app/aptly/gen
+    command: generate -c swagger.conf.json -i swagger.yaml -l typescript-angular -o src/app/aptly/gen/gen
     working_dir: /usr/src/app
     volumes:
       - ..:/usr/src/app
