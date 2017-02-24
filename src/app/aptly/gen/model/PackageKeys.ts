@@ -12,14 +12,10 @@
 
 import * as models from './models';
 
-export interface PublishSource {
+export interface PackageKeys {
     /**
-     * 
+     * list of package references (package keys)
      */
-    "component"?: string;
-    /**
-     * 
-     */
-    "name"?: string;
+    "PackageRefs"?: Array<string>;
 }
 

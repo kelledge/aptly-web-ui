@@ -12,22 +12,18 @@
 
 import * as models from './models';
 
-export interface Repository {
-    /**
-     * local repository name
-     */
-    "name"?: string;
+export interface RepositoryUpdate {
     /**
      * text describing local repository, for the user
      */
-    "comment"?: string;
+    "Comment"?: string;
     /**
      * default distribution when publishing from this local repo
      */
-    "defaultDistribution"?: string;
+    "DefaultDistribution"?: string;
     /**
      * default component when publishing from this local repo
      */
-    "defaultComponent"?: string;
+    "DefaultComponent"?: string;
 }
 

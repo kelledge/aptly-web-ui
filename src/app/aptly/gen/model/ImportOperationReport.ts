@@ -12,18 +12,18 @@
 
 import * as models from './models';
 
-export interface RepositoryUpdate {
+export interface ImportOperationReport {
     /**
-     * text describing local repository, for the user
+     * list of warnings
      */
-    "comment"?: string;
+    "Warnings"?: Array<string>;
     /**
-     * default distribution when publishing from this local repo
+     * list of messages related to packages being added
      */
-    "defaultDistribution"?: string;
+    "Added"?: Array<string>;
     /**
-     * default component when publishing from this local repo
+     * list of messages related to packages being deleted
      */
-    "defaultComponent"?: string;
+    "Deleted"?: Array<string>;
 }
 

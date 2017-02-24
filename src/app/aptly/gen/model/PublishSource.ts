@@ -12,14 +12,14 @@
 
 import * as models from './models';
 
-export interface SnapshotUpdate {
+export interface PublishSource {
     /**
-     * new snapshot name
+     * 
      */
-    "name"?: string;
+    "Component"?: string;
     /**
-     * free-format description how snapshot has been created
+     * 
      */
-    "description"?: string;
+    "Name"?: string;
 }
 

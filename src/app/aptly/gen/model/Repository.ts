@@ -12,18 +12,22 @@
 
 import * as models from './models';
 
-export interface Snapshot {
+export interface Repository {
     /**
-     * snapshot name
+     * local repository name
      */
-    "name"?: string;
+    "Name"?: string;
     /**
-     * free-format description how snapshot has been created
+     * text describing local repository, for the user
      */
-    "description"?: string;
+    "Comment"?: string;
     /**
-     * creation timestamp
+     * default distribution when publishing from this local repo
      */
-    "createdAt"?: number;
+    "DefaultDistribution"?: string;
+    /**
+     * default component when publishing from this local repo
+     */
+    "DefaultComponent"?: string;
 }
 

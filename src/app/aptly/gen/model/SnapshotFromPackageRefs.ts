@@ -16,18 +16,18 @@ export interface SnapshotFromPackageRefs {
     /**
      * snapshot name
      */
-    "name"?: string;
+    "Name"?: string;
     /**
      * free-format description how snapshot has been created
      */
-    "description"?: string;
+    "Description"?: string;
     /**
      * list of source snapshot names (only for tracking purposes)
      */
-    "sourceSnapshots"?: Array<string>;
+    "SourceSnapshots"?: Array<string>;
     /**
      * list of package keys which would be contents of the repository
      */
-    "packageRefs"?: Array<string>;
+    "PackageRefs"?: Array<string>;
 }
 

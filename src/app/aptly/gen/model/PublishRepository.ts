@@ -16,32 +16,32 @@ export interface PublishRepository {
     /**
      * required, source kind; local for local repositories and snapshot for snapshots
      */
-    "sourceKind"?: PublishRepository.SourceKindEnum;
+    "SourceKind"?: PublishRepository.SourceKindEnum;
     /**
      * required, list of Component/Name objects, Name is either local repository or snpashot name
      */
-    "sources"?: Array<models.PublishSource>;
+    "Sources"?: Array<models.PublishSource>;
     /**
      * distribution name, if missing aptly would try to guess from sources
      */
-    "distribution"?: string;
+    "Distribution"?: string;
     /**
      * value of Label; field in published repository stanza
      */
-    "label"?: string;
+    "Label"?: string;
     /**
      * value of Origin; field in published repository stanza
      */
-    "origin"?: string;
+    "Origin"?: string;
     /**
      * when publishing, overwrite files in pool/ directory without notice
      */
-    "forceOverwrite"?: boolean;
+    "ForceOverwrite"?: boolean;
     /**
      * override list of published architectures
      */
-    "architectures"?: Array<string>;
-    "signing"?: models.SigningOptions;
+    "Architectures"?: Array<string>;
+    "Signing"?: models.SigningOptions;
 }
 
 export namespace PublishRepository {

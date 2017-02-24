@@ -16,34 +16,34 @@ export interface PublishedRepository {
     /**
      * storage kind (empty for local filesystem, s3 for S3 and swift for Swift)
      */
-    "storage"?: string;
+    "Storage"?: string;
     /**
      * publishing prefix, . for root
      */
-    "prefix"?: string;
+    "Prefix"?: string;
     /**
      * distribution name
      */
-    "distribution"?: string;
+    "Distribution"?: string;
     /**
      * type of published repository; snapshot for snapshot, local for local repositories
      */
-    "sourceKind"?: string;
+    "SourceKind"?: string;
     /**
      * list of sources, Component and Name of local repository/snapshot
      */
-    "sources"?: Array<models.PublishSource>;
+    "Sources"?: Array<models.PublishSource>;
     /**
      * list of architectures published, e.g. [\"i386\", \"amd64\"]
      */
-    "architectures"?: Array<string>;
+    "Architectures"?: Array<string>;
     /**
      * value of Label; field in published repository stanza
      */
-    "label"?: string;
+    "Label"?: string;
     /**
      * value of Origin; field in published repository stanza
      */
-    "origin"?: string;
+    "Origin"?: string;
 }
 

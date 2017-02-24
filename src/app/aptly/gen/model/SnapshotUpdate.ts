@@ -12,14 +12,14 @@
 
 import * as models from './models';
 
-export interface PackageDiff {
+export interface SnapshotUpdate {
     /**
-     * package reference present only in left snapshot
+     * new snapshot name
      */
-    "left"?: string;
+    "Name"?: string;
     /**
-     * package reference present only in right snapshot
+     * free-format description how snapshot has been created
      */
-    "right"?: string;
+    "Description"?: string;
 }
 

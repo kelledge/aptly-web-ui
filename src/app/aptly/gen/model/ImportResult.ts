@@ -12,10 +12,11 @@
 
 import * as models from './models';
 
-export interface PackageKeys {
+export interface ImportResult {
     /**
-     * list of package references (package keys)
+     * list of files that failed to be processed
      */
-    "packageRefs"?: Array<string>;
+    "FailedFiles"?: Array<string>;
+    "Report"?: models.ImportOperationReport;
 }
 

@@ -12,18 +12,18 @@
 
 import * as models from './models';
 
-export interface ImportOperationReport {
+export interface Snapshot {
     /**
-     * list of warnings
+     * snapshot name
      */
-    "warnings"?: Array<string>;
+    "Name"?: string;
     /**
-     * list of messages related to packages being added
+     * free-format description how snapshot has been created
      */
-    "added"?: Array<string>;
+    "Description"?: string;
     /**
-     * list of messages related to packages being deleted
+     * creation timestamp
      */
-    "deleted"?: Array<string>;
+    "CreatedAt"?: number;
 }
 

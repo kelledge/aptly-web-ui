@@ -16,30 +16,30 @@ export interface SigningOptions {
     /**
      * if true, don’t sign published repository
      */
-    "skip"?: boolean;
+    "Skip"?: boolean;
     /**
      * should be set if passing passphrase
      */
-    "batch"?: boolean;
+    "Batch"?: boolean;
     /**
      * gpg key name (local to aptly server/user)
      */
-    "gpgKey"?: string;
+    "GpgKey"?: string;
     /**
      * gpg keyring filename (local to aptly server/user)
      */
-    "keyring"?: string;
+    "Keyring"?: string;
     /**
      * gpg secret keyring filename (local to aptly server/user)
      */
-    "secretKeyring"?: string;
+    "SecretKeyring"?: string;
     /**
      * gpg key passphrase (if using over http, would be transmitted in clear text!)
      */
-    "passphrase"?: string;
+    "Passphrase"?: string;
     /**
      * gpg passphrase file (local to aptly server/user)
      */
-    "passphraseFile"?: string;
+    "PassphraseFile"?: string;
 }
 

@@ -12,11 +12,14 @@
 
 import * as models from './models';
 
-export interface ImportResult {
+export interface PackageDiff {
     /**
-     * list of files that failed to be processed
+     * package reference present only in left snapshot
      */
-    "failedFiles"?: Array<string>;
-    "report"?: models.ImportOperationReport;
+    "Left"?: string;
+    /**
+     * package reference present only in right snapshot
+     */
+    "Right"?: string;
 }
 

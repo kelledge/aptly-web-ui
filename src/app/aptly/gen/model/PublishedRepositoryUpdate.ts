@@ -13,11 +13,11 @@
 import * as models from './models';
 
 export interface PublishedRepositoryUpdate {
-    "snapshots"?: models.PublishSource;
+    "Snapshots"?: models.PublishSource;
     /**
      * when publishing, overwrite files in pool/ directory without notice
      */
-    "forceOverwrite"?: boolean;
-    "signing"?: models.SigningOptions;
+    "ForceOverwrite"?: boolean;
+    "Signing"?: models.SigningOptions;
 }
 
