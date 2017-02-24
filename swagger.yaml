@@ -106,7 +106,7 @@ paths:
         404:
           description: repository with such name doesn’t exist
         409:
-          description: 	repository can’t be dropped (reason in the message)
+          description: repository can’t be dropped (reason in the message)
 
   /repos/{name}/packages:
     get:
@@ -209,7 +209,7 @@ paths:
           required: true
           type: string
         - name: noRemove
-          description: 	when value is set to 1, don’t remove any files
+          description: when value is set to 1, don’t remove any files
           in: query
           required: false
           type: integer
@@ -255,7 +255,7 @@ paths:
           required: true
           type: string
         - name: noRemove
-          description: 	when value is set to 1, don’t remove any files
+          description: when value is set to 1, don’t remove any files
           in: query
           required: false
           type: integer
@@ -432,7 +432,7 @@ paths:
         400:
           description: snapshot with name Name already exists, package conflict
         404:
-          description: 	source snapshot doesn’t exist, package doesn’t exist
+          description: source snapshot doesn’t exist, package doesn’t exist
 
 
 
