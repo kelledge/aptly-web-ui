@@ -23,6 +23,13 @@ services:
     ports:
       - "80:80"
 
+  code-gen:
+    build: ./code-gen
+    command: generate -c swagger.conf.json -i swagger.yaml -l typescript-angular -o src/app/aptly/gen
+    working_dir: /usr/src/app
+    volumes:
+      - ..:/usr/src/app
+
   test:
     image: node:7.5.0
     command: npm run test
@@ -31,5 +38,3 @@ services:
       - "3000"
     volumes:
       - ..:/usr/src/app
-
-
